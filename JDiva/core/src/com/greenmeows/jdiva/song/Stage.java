@@ -3,14 +3,11 @@ package com.greenmeows.jdiva.song;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.greenmeows.jdiva.Game;
-import com.greenmeows.jdiva.constants.Constants;
-import com.greenmeows.jdiva.constants.NoteSettings;
 
 public class Stage {
 	
@@ -24,6 +21,7 @@ public class Stage {
 	private float spawndelay;
 	private boolean started = false;
 	private float counter;
+	private int currentindex;
 	
 	private void addnotes() {
 		counter += 1000*Gdx.graphics.getDeltaTime();
@@ -31,19 +29,19 @@ public class Stage {
 			try {
 				counter = 0;
 				notes.add(queuednotes.get(0));
-				queuednotes.remove(0);
-			}
+				queuednotes.remove(0);				}
 			catch(Exception e) {
-				
+			
 			}
-		}
+		}			
+		currentindex++;
 	}
 	
 	
 	private void antilag() {
 		Iterator<Note> iter = notes.iterator();
 		while(iter.hasNext()) {
-			if(iter.next().isHit()) {
+			if(iter.next().isJudgementDrawn()) {
 				iter.remove();
 			}
 		}

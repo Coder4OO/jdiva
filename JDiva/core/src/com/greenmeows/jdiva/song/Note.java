@@ -2,8 +2,11 @@ package com.greenmeows.jdiva.song;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
 import com.greenmeows.jdiva.Game;
 import com.greenmeows.jdiva.constants.Constants;
@@ -24,8 +27,13 @@ public class Note {
 	private float slopelength;
 	private float xdir;
 	private float ydir;
+	private float counter = 0;
+	private BitmapFont judgement;
+	private int judge;
+	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 	
 	private boolean ishit = false;
+	private boolean judgementdrawn = false;
 	private boolean haspassedzero = false;
 	
 	private float calculateSpeed() {
@@ -42,23 +50,23 @@ public class Note {
 		switch(keybind) {
 		case "triangle":
 			this.keybind = Keys.Q;
-			hit = new Sprite(new Texture(Gdx.files.internal("trianglehit.png")));
-			cover = new Sprite(new Texture(Gdx.files.internal("trianglecover.png")));
+			hit = new Sprite(new Texture(Gdx.files.internal("images\\trianglehit.png")));
+			cover = new Sprite(new Texture(Gdx.files.internal("images\\trianglecover.png")));
 			break;
 		case "square":
 			this.keybind = Keys.W;
-			hit = new Sprite(new Texture(Gdx.files.internal("squarehit.png")));
-			cover = new Sprite(new Texture(Gdx.files.internal("squarecover.png")));
+			hit = new Sprite(new Texture(Gdx.files.internal("images\\squarehit.png")));
+			cover = new Sprite(new Texture(Gdx.files.internal("images\\squarecover.png")));
 			break;
 		case "cross":
 			this.keybind = Keys.O;
-			hit = new Sprite(new Texture(Gdx.files.internal("crosshit.png")));
-			cover = new Sprite(new Texture(Gdx.files.internal("crosscover.png")));
+			hit = new Sprite(new Texture(Gdx.files.internal("images\\crosshit.png")));
+			cover = new Sprite(new Texture(Gdx.files.internal("images\\crosscover.png")));
 			break;
 		case "circle":
 			this.keybind = Keys.P;
-			hit = new Sprite(new Texture(Gdx.files.internal("circlehit.png")));
-			cover = new Sprite(new Texture(Gdx.files.internal("circlecover.png")));
+			hit = new Sprite(new Texture(Gdx.files.internal("images\\circlehit.png")));
+			cover = new Sprite(new Texture(Gdx.files.internal("images\\circlecover.png")));
 			break;
 		}
 		x *= Constants.WIDTH;
@@ -79,6 +87,34 @@ public class Note {
 		slopelength = ((float) Math.sqrt((xslope*xslope)+(yslope*yslope)));
 		xdir = xslope/slopelength;
 		ydir = yslope/slopelength;
+		parameter.size = 25;
+		parameter.shadowColor = Color.BLACK;
+		parameter.borderColor = Color.BLACK;
+		parameter.borderWidth = 5;
+		judgement = Game.getGenerator().generateFont(parameter);
+	}
+	
+	private void drawJudgement() {
+		String text = "";
+		switch(judge) {
+		case Judgements.SCORE_COOL:
+			text = "COOL";
+			judgement.setColor(Color.GOLD);
+			break;
+		case Judgements.SCORE_GREAT:
+			text = "GREAT";
+			judgement.setColor(Color.GRAY);
+			break;
+		case Judgements.SCORE_OKAY:
+			text = "OKAY";
+			judgement.setColor(Color.BROWN);
+			break;
+		case Judgements.SCORE_SAFE:
+			text = "SAFE";
+			judgement.setColor(Color.GREEN);
+			break;
+		}
+		judgement.draw(Game.getBatch(), new StringBuffer(text), pos.x, pos.y);
 	}
 	
 	
@@ -126,8 +162,8 @@ public class Note {
 			}
 			if(canhit) {
 				if(Gdx.input.isKeyJustPressed(keybind)) {
-					int judgement = detect_hit(time);
-					switch(judgement) {
+					judge = detect_hit(time);
+					switch(judge) {
 					case Judgements.SCORE_COOL:
 						System.out.println("COOL");
 						break;
@@ -159,12 +195,27 @@ public class Note {
 		this.ishit = ishit;
 	}
 	
+	public boolean isJudgementDrawn() {
+		return judgementdrawn;
+	}
+	
 	public void draw() {
 		if(!ishit) {
 			coverSprite.setX(coverpos.x);
 			coverSprite.setY(coverpos.y);
 			hitSprite.draw(Game.getBatch());
 			coverSprite.draw(Game.getBatch());
+		}
+		float factor = bpm/100*2;
+		float drawtime = 1;
+		if(judge > 0) {
+			counter += Gdx.graphics.getDeltaTime();
+			if(counter <= drawtime) {
+				drawJudgement();
+			}
+			else {
+				judgementdrawn = true;
+			}
 		}
 	}
 	
