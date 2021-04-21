@@ -1,0 +1,18 @@
+Name:Macaron Moon
+Speed:100
+Duration:100
+SpawnDelay:1
+Music:audio.mp3
+Background:cover.png
+0.25,0.25,1,0,triangle
+0.25,0.5,1,0,square
+0.25,0.75,1,0,circle
+0.35,0.25,0,1,cross
+0.45,0.25,0,1,triangle
+0.55,0.25,0,1,square
+0.55,0.25,1,0,triangle
+0.55,0.5,1,0,square
+0.55,0.75,1,0,circle
+0.55,0.55,0,1,cross
+0.55,0.45,0,1,triangle
+0.55,0.35,0,1,square
