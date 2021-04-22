@@ -1,0 +1,2 @@
+com/greenmeows/jdiva/desktop/DesktopLauncher.java
+ com.greenmeows.jdiva.desktop.DesktopLauncher

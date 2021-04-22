@@ -114,6 +114,9 @@ public class Note {
 			judgement.setColor(Color.GREEN);
 			break;
 		}
+		if(NoteSettings.COMBO > 0) {
+			text += " "+NoteSettings.COMBO;
+		}
 		judgement.draw(Game.getBatch(), new StringBuffer(text), pos.x, pos.y);
 	}
 	
@@ -121,21 +124,26 @@ public class Note {
 	private int detect_hit(float time) {
 		if(time <= Judgements.TIMING_COOL) {
 			ishit = true;
+			NoteSettings.COMBO++;
 			return Judgements.SCORE_COOL;
 		}
 		else if(time > Judgements.TIMING_COOL && time <= Judgements.TIMING_GREAT) {
 			ishit = true;
+			NoteSettings.COMBO++;
 			return Judgements.SCORE_GREAT;
 		}
 		else if(time > Judgements.TIMING_GREAT && time <= Judgements.TIMING_OKAY) {
 			ishit = true;
+			NoteSettings.COMBO++;
 			return Judgements.SCORE_OKAY;
 		}
 		else if(time > Judgements.TIMING_OKAY && time <= Judgements.TIMING_SAFE) {
 			ishit = true;
+			NoteSettings.COMBO = 0;
 			return Judgements.SCORE_SAFE;
 		}
 		else {
+			NoteSettings.COMBO = 0;
 			System.out.println("Hacking");
 			System.exit(0);
 			return 0;
@@ -158,6 +166,7 @@ public class Note {
 			}
 			boolean canhit = time <= Judgements.TIMING_SAFE;
 			if(time > Judgements.TIMING_SAFE*7.5 && haspassedzero) {
+				NoteSettings.COMBO = 0;
 				ishit = true;
 			}
 			if(canhit) {
@@ -206,7 +215,6 @@ public class Note {
 			hitSprite.draw(Game.getBatch());
 			coverSprite.draw(Game.getBatch());
 		}
-		float factor = bpm/100*2;
 		float drawtime = 1;
 		if(judge > 0) {
 			counter += Gdx.graphics.getDeltaTime();
