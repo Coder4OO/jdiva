@@ -27,7 +27,7 @@ public class Note {
 	private float slopelength;
 	private float xdir;
 	private float ydir;
-	private float counter = 0;
+	private float counter = 0; 
 	private BitmapFont judgement;
 	private int judge;
 	FreeTypeFontParameter parameter = new FreeTypeFontParameter();

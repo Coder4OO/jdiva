@@ -16,3 +16,5 @@ com/greenmeows/jdiva/song/MapLoader.java
  com.greenmeows.jdiva.song.MapLoader
 com/greenmeows/jdiva/song/Song.java
  com.greenmeows.jdiva.song.Song
+com/greenmeows/jdiva/MainMenu.java
+ com.greenmeows.jdiva.MainMenu
